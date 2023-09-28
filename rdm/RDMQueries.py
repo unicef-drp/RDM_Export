@@ -115,12 +115,7 @@ def query_indicator_by_helix_code(helix_code):
                                     attr["attributeName"].lower()
                                     == "indicator name".lower()
                                 ):
-                                    indicator.name = (
-                                        attr["value"]
-                                        .replace("\n", " ")
-                                        .replace("\t", " ")
-                                        .replace("\r", " ")
-                                    )
+                                    indicator.name = clean_text(attr["value"])
                                 if (
                                     attr["attributeName"].lower()
                                     == "indicator definition".lower()
@@ -135,40 +130,15 @@ def query_indicator_by_helix_code(helix_code):
                                     attr["attributeCode"].lower()
                                     == "DEN_DEFINITION".lower()
                                 ):
-                                    indicator.dendefinition = (
-                                        attr["value"]
-                                        .replace("\n", " ")
-                                        .replace("\t", " ")
-                                        .replace("\r", " ")
-                                    )
+                                    indicator.dendefinition = clean_text(attr["value"])
                                 if attr["attributeCode"].lower() == "POP_AGGR".lower():
-                                    indicator.POP_AGGR = (
-                                        attr["value"]
-                                        .replace("\n", " ")
-                                        .replace("\t", " ")
-                                        .replace("\r", " ")
-                                    )
+                                    indicator.POP_AGGR = clean_text(attr["value"])
                                 if attr["attributeCode"].lower() == "METH_AGGR".lower():
-                                    indicator.METH_AGGR = (
-                                        attr["value"]
-                                        .replace("\n", " ")
-                                        .replace("\t", " ")
-                                        .replace("\r", " ")
-                                    )
+                                    indicator.METH_AGGR = clean_text(attr["value"])
                                 if attr["attributeCode"].lower() == "ADD_DET".lower():
-                                    indicator.ADD_DET = (
-                                        attr["value"]
-                                        .replace("\n", " ")
-                                        .replace("\t", " ")
-                                        .replace("\r", " ")
-                                    )
+                                    indicator.ADD_DET = clean_text(attr["value"])
                                 if attr["attributeCode"].lower() == "ALT_NAME".lower():
-                                    indicator.ALT_NAME = (
-                                        attr["value"]
-                                        .replace("\n", " ")
-                                        .replace("\t", " ")
-                                        .replace("\r", " ")
-                                    )
+                                    indicator.ALT_NAME = clean_text(attr["value"])
             return indicator
     return None
 
@@ -279,3 +249,7 @@ def query_regions():
                         region.countryISOs = countries
                         result.append(region)
     return result
+
+
+def clean_text(text):
+    return text.replace("\n", " ").replace("\t", " ").replace("\r", " ").strip()

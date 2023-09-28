@@ -10,6 +10,10 @@ from progress.bar import Bar
 
 
 def main():
+    export_public_indicators()
+
+
+def export_public_indicators():
     all_indicators = []
     codes = rdmQ.query_all_indicators()
     with Bar("Downloading indicators from RDM...", max=len(codes)) as bar:
@@ -69,6 +73,12 @@ def main():
     # Step 2: Convert list of lists to CSV
     df = pd.DataFrame(lst)
     df.to_csv("indicators.csv", index=False, header=headerList)
+
+
+def export_countries():
+    # TO BE ADDED
+    # rdm.RDMQueries already contains the code to read countries and regions from RDM
+    print()
 
 
 if __name__ == "__main__":
