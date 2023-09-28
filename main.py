@@ -17,7 +17,6 @@ def main():
             indicator = rdmQ.query_indicator_by_helix_code(code)
             all_indicators.append(indicator)
             bar.next()
-            break
 
     # Step 1: Convert list of objects to list of lists
     lst = [
