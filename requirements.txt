@@ -1,3 +1,7 @@
 requests
 pandas
 urllib3
+progress 
+progressbar2 
+alive-progress 
+tqdm

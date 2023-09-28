@@ -61,7 +61,8 @@ def query_indicator_by_helix_code(helix_code):
                 indicator.domain = domains[int(jdomain)]
             if "subdomain" in json_response:
                 jsubdomain = json_response["subdomain"]
-                indicator.subdomain = subdomains[int(jsubdomain)]
+                if jsubdomain != "":
+                    indicator.subdomain = subdomains[int(jsubdomain)]
             if "classifications" in json_response:
                 # list of dictionaries
                 classifications = json_response["classifications"]
@@ -85,6 +86,18 @@ def query_indicator_by_helix_code(helix_code):
             if "collectionMechanism" in json_response:
                 collectionMechanism = json_response["collectionMechanism"]
                 indicator.collectionMechanism = collectionMechanism["name"]
+            if "strategicPlanArea" in json_response:
+                strategicPlanArea = json_response["strategicPlanArea"]
+                indicator.spArea = strategicPlanArea["name"]
+            if "strategicPlanStatement" in json_response:
+                strategicPlanStatement = json_response["strategicPlanStatement"]
+                indicator.spStatement = strategicPlanStatement["statement"]
+            if "type" in json_response:
+                itype = json_response["type"]
+                indicator.itype = itype["typeName"]
+            if "ownerAgency" in json_response:
+                ownerAgency = json_response["ownerAgency"]
+                indicator.ownerAgency = ownerAgency["organization"]
             if "attributes" in json_response:
                 attributes = json_response["attributes"]  # list of dictionary
                 if type(attributes) is list and len(attributes) > 0:
@@ -98,12 +111,16 @@ def query_indicator_by_helix_code(helix_code):
                         ):
                             # only english attributes
                             if attr["language"].lower() == "english":
-                                # case name
                                 if (
                                     attr["attributeName"].lower()
                                     == "indicator name".lower()
                                 ):
-                                    indicator.name = attr["value"]
+                                    indicator.name = (
+                                        attr["value"]
+                                        .replace("\n", " ")
+                                        .replace("\t", " ")
+                                        .replace("\r", " ")
+                                    )
                                 if (
                                     attr["attributeName"].lower()
                                     == "indicator definition".lower()
@@ -118,33 +135,42 @@ def query_indicator_by_helix_code(helix_code):
                                     attr["attributeCode"].lower()
                                     == "DEN_DEFINITION".lower()
                                 ):
-                                    indicator.dendefinition = attr["value"]
+                                    indicator.dendefinition = (
+                                        attr["value"]
+                                        .replace("\n", " ")
+                                        .replace("\t", " ")
+                                        .replace("\r", " ")
+                                    )
                                 if attr["attributeCode"].lower() == "POP_AGGR".lower():
-                                    indicator.POP_AGGR = attr["value"]
+                                    indicator.POP_AGGR = (
+                                        attr["value"]
+                                        .replace("\n", " ")
+                                        .replace("\t", " ")
+                                        .replace("\r", " ")
+                                    )
                                 if attr["attributeCode"].lower() == "METH_AGGR".lower():
-                                    indicator.METH_AGGR = attr["value"]
+                                    indicator.METH_AGGR = (
+                                        attr["value"]
+                                        .replace("\n", " ")
+                                        .replace("\t", " ")
+                                        .replace("\r", " ")
+                                    )
                                 if attr["attributeCode"].lower() == "ADD_DET".lower():
-                                    indicator.ADD_DET = attr["value"]
+                                    indicator.ADD_DET = (
+                                        attr["value"]
+                                        .replace("\n", " ")
+                                        .replace("\t", " ")
+                                        .replace("\r", " ")
+                                    )
+                                if attr["attributeCode"].lower() == "ALT_NAME".lower():
+                                    indicator.ALT_NAME = (
+                                        attr["value"]
+                                        .replace("\n", " ")
+                                        .replace("\t", " ")
+                                        .replace("\r", " ")
+                                    )
             return indicator
     return None
-
-
-# get all indicators from RDM and return a list of helix codes
-def query_indicators_uppercased():
-    result = []
-    path = "https://rdmapi.unicef.org/api/indicators"
-    response = requests.get(path)
-    if response.status_code == 200:
-        json_response = json.loads(response.text)  # list of dictionaries
-        if type(json_response) is list and len(json_response) > 0:
-            for indicator in json_response:
-                if (
-                    type(indicator) is dict
-                    and bool(indicator)
-                    and "helixCode" in indicator
-                ):
-                    result.append(indicator["helixCode"].upper())
-    return result
 
 
 # get all current countries from RDM, returning a dictionary ISO3 -> country

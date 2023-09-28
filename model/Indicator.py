@@ -3,11 +3,14 @@ class Indicator:
     def __init__(self, helix_code):
         self.rdm_id = None
         self.helix_code = helix_code
-        self.tags = []
-        self.classifications = []
-        self.collectionMechanism = ""
+
+        self.sector = ""
+        self.domain = ""
+        self.subdomain = ""
+        self.ownerAgency = ""
 
         self.name = ""
+        self.ALT_NAME = ""
         self.definition = ""
         self.numdefinition = ""
         self.dendefinition = ""
@@ -15,6 +18,10 @@ class Indicator:
         self.POP_AGGR = ""
         self.METH_AGGR = ""
 
-        self.sector = ""
-        self.domain = ""
-        self.subdomain = ""
+        self.collectionMechanism = ""
+        self.spArea = ""
+        self.spStatement = ""
+
+        self.classifications = []
+        self.tags = []
+        self.itype = ""
