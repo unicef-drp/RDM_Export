@@ -11,6 +11,8 @@ from progress.bar import Bar
 
 def main():
     export_public_indicators()
+    export_countries()
+    export_regions()
 
 
 def export_public_indicators():
@@ -76,9 +78,44 @@ def export_public_indicators():
 
 
 def export_countries():
-    # TO BE ADDED
-    # rdm.RDMQueries already contains the code to read countries and regions from RDM
-    print()
+    print("Downloading countries from RDM...")
+    all_countries = rdmQ.query_countries().values()
+    # Step 1: Convert list of objects to list of lists
+    lst = [
+        [
+            x.ISO3,
+            x.names,
+        ]
+        for x in all_countries
+    ]
+    # adding header
+    headerList = [
+        "ISO3",
+        "names",
+    ]
+    # Step 2: Convert list of lists to CSV
+    df = pd.DataFrame(lst)
+    df.to_csv("countries.csv", index=False, header=headerList)
+
+
+def export_regions():
+    print("Downloading regions from RDM...")
+    all_regions = rdmQ.query_regions()
+    # Step 1: Convert list of objects to list of lists
+    lst = [
+        [x.CDNCode, x.names, x.collection, x.series, x.countryISOs] for x in all_regions
+    ]
+    # adding header
+    headerList = [
+        "CDNCode",
+        "names",
+        "collection",
+        "series",
+        "countries",
+    ]
+    # Step 2: Convert list of lists to CSV
+    df = pd.DataFrame(lst)
+    df.to_csv("regions.csv", index=False, header=headerList)
 
 
 if __name__ == "__main__":

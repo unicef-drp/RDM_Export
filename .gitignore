@@ -1,3 +1,5 @@
 indicators.csv
 rdm/__pycache__/RDMQueries.cpython-310.pyc
 model/__pycache__/Indicator.cpython-310.pyc
+countries.csv
+regions.csv
