@@ -7,12 +7,21 @@ import rdm.RDMQueries as rdmQ
 import pandas as pd
 from time import sleep
 from progress.bar import Bar
+import argparse
 
 
 def main():
-    export_public_indicators()
-    export_countries()
-    export_regions()
+    # read arguments
+    parser = create_commandline_args()
+    args = parser.parse_args()
+    target = args.target
+
+    if target == "indicators":
+        export_public_indicators()
+    if target == "countries":
+        export_countries()
+    if target == "regions":
+        export_regions()
 
 
 def export_public_indicators():
@@ -116,6 +125,17 @@ def export_regions():
     # Step 2: Convert list of lists to CSV
     df = pd.DataFrame(lst)
     df.to_csv("regions.csv", index=False, header=headerList)
+
+
+# parse command line arguments and provides help
+def create_commandline_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--target",
+        help="Dataset to export: indicators, countries, regions",
+        required=True,
+    )
+    return parser
 
 
 if __name__ == "__main__":
