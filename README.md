@@ -1,7 +1,7 @@
 # RDM_Export
 Export some data from RDM using RDM public APIs
 
-**Note**: When exporting indicators, the API allows to access only indicators that are marked as "published" in RDM. If an indicator is not marked as "published", it will not be accessible through the 
+**Note**: When exporting indicators, the API allows access to only indicators that are marked as "published" in RDM. If an indicator is not marked as "published", it will not be accessible through the 
 API so it will not be seen by other tools (like Consult) and websites (like the Indicator Pages on data.unicef.org).
 
 **Note**: The current script is mapping to Python objects and then CSV columns only the attributes that are currently used in RDM. Attributes that haven't been used yet or attributes that will be added in the future to RDM must be added to the Python object, to the API reader, and to the CSV exporter
@@ -13,7 +13,7 @@ API so it will not be seen by other tools (like Consult) and websites (like the 
 ```
 
 ## Installation
-Once you clone the GIT repository, requirements must be installed:
+Once you clone the GIT repository, the requirements must be installed:
 ```
 pip3 install -r requirements.txt
 ```
@@ -35,7 +35,7 @@ py -m venv .venv
 .\.venv\Scripts\activate
 deactivate
 ```
-Once you clone the GIT repository, requirements must be installed:
+Once you clone the GIT repository, the requirements must be installed:
 ```
 pip3 install -r requirements.txt
 ```
@@ -45,7 +45,7 @@ py -m pip install -r requirements.txt
 ```
 
 ## Example of execution  
-Note: the name of the executor depends on your environment. On Linux it is usually "python3", but in Windows it may just be "py".  
+Note: the name of the executor depends on your environment. It is usually "python3" on Linux, but it may just be "py" on Windows.  
 
 **Example:** For extracting all public indicators from RDM in CSV:
 
