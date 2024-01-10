@@ -7,11 +7,17 @@ from model.Indicator import Indicator
 # Query RDM indicator by helix code
 from model.Region import Region
 
+import urllib3
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+# base_api_path = "https://localhost:44304/"
+base_api_path = "https://rdmapi.unicef.org/"
+
 
 def query_all_indicators():
-    api_base_path = "https://rdmapi.unicef.org/api/indicators/"
+    api_base_path = base_api_path + "api/indicators/"
     codes = []
-    response = requests.get(api_base_path)
+    response = requests.get(api_base_path, verify=False)
     if response.status_code == 200:
         json_response = response.json()
         for indicator in json_response:
@@ -20,33 +26,35 @@ def query_all_indicators():
 
 
 def query_indicator_by_helix_code(helix_code):
+    print("\nIndicator: " + helix_code)
+
     sectors = {}
-    sectors_paths = "https://rdmapi.unicef.org/api/sectors"
-    response = requests.get(sectors_paths)
+    sectors_paths = base_api_path + "api/sectors"
+    response = requests.get(sectors_paths, verify=False)
     if response.status_code == 200:
         json_response = response.json()
         for sector in json_response:
             sectors[sector["sectorId"]] = sector["name"]
 
     domains = {}
-    domain_paths = "https://rdmapi.unicef.org/api/sectors/domains"
-    response = requests.get(domain_paths)
+    domain_paths = base_api_path + "api/sectors/domains"
+    response = requests.get(domain_paths, verify=False)
     if response.status_code == 200:
         json_response = response.json()
         for domain in json_response:
             domains[domain["domainId"]] = domain["name"]
 
     subdomains = {}
-    sd_paths = "https://rdmapi.unicef.org/api/sectors/subdomains"
-    response = requests.get(sd_paths)
+    sd_paths = base_api_path + "api/sectors/subdomains"
+    response = requests.get(sd_paths, verify=False)
     if response.status_code == 200:
         json_response = response.json()
         for sd in json_response:
             subdomains[sd["subdomainId"]] = sd["name"]
 
-    api_base_path = "https://rdmapi.unicef.org/api/indicators/"
+    api_base_path = base_api_path + "api/indicators/"
     path = api_base_path + helix_code
-    response = requests.get(path)
+    response = requests.get(path, verify=False)
     if response.status_code == 200:
         json_response = json.loads(response.text)
         indicator = Indicator(helix_code)
@@ -146,8 +154,8 @@ def query_indicator_by_helix_code(helix_code):
 # get all current countries from RDM, returning a dictionary ISO3 -> country
 def query_countries():
     result = {}
-    path = "https://rdmapi.unicef.org/api/countries/current"
-    response = requests.get(path)
+    path = base_api_path + "api/countries/current"
+    response = requests.get(path, verify=False)
     if response.status_code == 200:
         json_response = json.loads(response.text)  # list of dictionaries
         if type(json_response) is list and len(json_response) > 0:
@@ -185,8 +193,8 @@ def query_countries():
 # get all regions from RDM, returning a list
 def query_regions():
     result = []
-    path = "https://rdmapi.unicef.org/api/regions"
-    response = requests.get(path)
+    path = base_api_path + "api/regions"
+    response = requests.get(path, verify=False)
     if response.status_code == 200:
         json_response = json.loads(response.text)  # list of dictionaries
         if type(json_response) is list and len(json_response) > 0:
